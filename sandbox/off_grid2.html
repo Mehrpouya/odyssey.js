@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Life Off the Grid</title>
+  <meta charset="utf-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="../vendor/leaflet.css" />
+  <!--<link rel="stylesheet" href="./rolling_stones/style.css" />-->
+  <link rel="stylesheet" href="./offgrid/style.css" />
+  <style>
+    #slides{
+    }
+    /*.slide {
+      position: absolute;
+      top: 50%;
+      left: 100px;
+     font-size: 45px;
+
+    }*/
+
+    #map {
+      position: absolute;
+      top: 0; left: 0;
+      width:100%;
+      height: 100%;
+    }
+    #content {
+      padding: 0 40px;
+      height: 1500px;
+    }
+
+    #progress{
+      position: absolute;
+      top: 90%;
+      left: 50%;
+      z-index: 10;
+    }
+    #progress li {
+      display: inline-block;
+    }
+
+    #progress li a {
+      display: block;
+      width: 9px;
+      height: 9px;
+      background: url(http://vizzuality.github.io/rollingstonesmap/img/timeBullet.png) 0 0 no-repeat;
+    }
+
+    #progress li.active a {
+      background: url(http://vizzuality.github.io/rollingstonesmap/img/timeBullet.png) 0 -9px no-repeat;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="map" style="width: 100%; height: 100%"></div>
+  <div id="header">
+    <a id="title" href="#"></a>
+  </div>
+  <div id="slides">
+  </div>
+  <div id="progress"></div>
+
+  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="../vendor/leaflet.js"></script>
+  <script src="../dist/odyssey.js" charset="UTF-8"></script>
+  <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css" />
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/cartodb.js"></script>
+  <script src="../vendor/markdown.js" charset="UTF-8"></script>
+  <!--<script src="../vendor/actions.js" charset="UTF-8"></script>-->
+  <script>
+
+
+  var g_urls;
+  O.Template({
+    init: function() {
+      var map = new L.Map('map', {
+          zoomControl: true,
+          center: [56.881335, -6.141602],
+          zoom: 16
+        });
+L.tileLayer('https://2.maps.nlp.nokia.com/maptile/2.1/maptile/newest/normal.day/{z}/{x}/{y}/256/png8?lg=eng&token=A7tBPacePg9Mj_zghvKt9Q&app_id=KuYppsdXZznpffJsKT24', { attribution: 'data OSM - map CartoDB' }).addTo(map);
+//        L.tileLayer('http://0.api.cartocdn.com/base-dark/{z}/{x}/{y}.png', { attribution: 'data OSM - map CartoDB' }).addTo(map);
+         /*L.tileLayer('http://tile.stamen.com/toner/{z}/{x}/{y}.png', {
+          attribution: 'Stamen'
+        }).addTo(map);*/
+      var seq = O.Triggers.Sequential();
+      // enanle keys to move
+      O.Triggers.Keys().on('map').left().then(seq.next, seq)
+      O.Triggers.Keys().on('map').right().then(seq.next, seq)
+
+      var slides = O.Actions.Slides('slides');
+      var story = O.Story()
+
+      this.map = map;
+      this.story = story;
+      this.seq = seq;
+      this.slides = slides;
+      this.progress = DotProgress('progress').count(10);
+    },
+
+    update: function(actions) {
+      this.story.clear();
+      var sl = actions;
+      document.getElementById('slides').innerHTML = ''
+      this.progress.count(sl.length);
+      document.getElementById('title').innerHTML = actions.global.title;
+      // create new story
+      for(var i = 0; i < sl.length; ++i) {
+        var slide = sl[i];
+        var tmpl = "<section class='slide' style='diplay:none'><div class='content'>"
+        tmpl += slide.html();
+        tmpl += "</section></div>";
+        document.getElementById('slides').innerHTML += tmpl;
+var urlAction = O.Action(function() {
+  console.log($("section.selected div h6").val);
+});
+        var actions = O.Parallel.apply(window, [
+          this.slides.activate(i),
+//          console.log("window.g_urls[i]"),
+          slide(this),
+          this.progress.activate(i),
+          urlAction
+        ]);
+        this.story.addState(
+          this.seq.step(i),
+          actions
+        );
+      }
+      this.story.go(this.seq.current());
+    }
+  });
+  function stateUpdates(_url){
+      console.log(_url);
+  }
+  function DotProgress(el) {
+    var count = 0;
+    var element = O.Core.getElement(el);
+
+    function _progress() {
+      return _progress;
+    }
+
+    function render() {
+      var html = '<ul>';
+      for(var i = 0; i < count; ++i) {
+        html += '<li><a href="#' + i + '"></a></li>';
+      }
+      html += "</ul>";
+      element.innerHTML = html;
+    }
+
+    _progress.count = function(_) {
+      count = _;
+      render();
+      return _progress;
+    }
+
+    // returns an action to activate the index
+    _progress.activate = function(activeIndex) {
+      return O.Action(function () {
+        var children = element.children[0].children;
+        for(var i = 0; i < children.length; ++i) {
+          children[i].setAttribute('class', '')
+        }
+        children[activeIndex].setAttribute('class', 'active')
+      });
+    }
+
+    return _progress;
+
+  }
+
+  </script>
+  <script type="text/template" id="md_template">
+ ```
+-title: "Life Off the Grid"
+-author: "Hadi Mehrpouya"
+```
+
+# A Week on Eigg
+```
+- step: 0
+-center:[56.891335, -6.141602]
+- zoom: 14
+```
+
+## Day one
+![Alt text](img/day1/IMG_1174.JPG)
+This day, I meet Bean at the Pier (rather than at their house, just up the hill). Since the EE maintenance team members take it in turns to carry out the daily checks, and this is done on a per-night basis (once in the evening, then again the following morning), Bean doesn't join his wife Sheena, John Booth and others in enjoying a couple of drinks in the afternoon sun, on the flaking wooden benches outside the shop. "I'll stay off the drink tonight - it's my night doing the checks - maybe I'll reward myself with a G&T tomorrow night instead".
+
+# A Week on Eigg
+```
+- step: 1
+-center:[57.891335, -6.141602]
+- zoom: 14
+```
+## Day two
+
+This day, I meet Bean at the Pier 
+######balh
+
+</script>
+
+
+</body>
+</html>
+<!--frat kaduri-->

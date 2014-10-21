@@ -1,0 +1,25 @@
+<html>
+<head>
+<meta charset=utf-8 />
+<title>A simple map</title>
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+<script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.0/mapbox.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.0/mapbox.css' rel='stylesheet' />
+<style>
+  body { margin:0; padding:0; }
+  #map { position:absolute; top:0; bottom:0; width:100%; }
+</style>
+</head>
+<body>
+
+<div id='map'></div>
+<script>
+//    https://a.tiles.mapbox.com/v4/jamiejcross.jgnm97od/page.html?access_token=pk.eyJ1IjoiamFtaWVqY3Jvc3MiLCJhIjoiRHRzNUhjVSJ9.JnWbgc2N6BeHHrqKTcIdXA#12/56.9192/-6.1464
+L.mapbox.accessToken = 'pk.eyJ1IjoiamFtaWVqY3Jvc3MiLCJhIjoiRHRzNUhjVSJ9.JnWbgc2N6BeHHrqKTcIdXA#12/56.9192/-6.1464';
+var map = L.mapbox.map('map', 'jamiejcross.jgnm97od')
+    .setView([40, -74.50], 9);
+</script>
+
+</body>
+</html>
+

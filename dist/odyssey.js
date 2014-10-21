@@ -822,7 +822,7 @@ function Step() {
   }
 
   _Step.exit = function() {
-    // call exit on each action
+    // call exit on each ation
     queue = actions.slice();
     next('exit');
     return true;
