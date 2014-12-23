@@ -325,6 +325,7 @@ div#credits{
     top: 50px;
     z-index: 110;
     text-align: left;
+    color: red;
 }
 
 .rot90{
@@ -333,7 +334,9 @@ div#credits{
     -o-transform: rotate(90deg);
     -ms-transform: rotate(90deg); 
 }
-
+#days ul{
+    text-align: center;
+}
 #days ul li.selected{
     color: red;
 
@@ -342,14 +345,19 @@ div#credits{
 #days ul li.selected *{
     color: red;
     font-weight: bold;
-        text-decoration: none;
+        text-decoration: underline;
     
 
 }
 #days ul li{
+    color: red;
     margin-top: 50px;
 }
 
+#days ul li a{
+    color: white;
+    text-decoration:none;
+}
 
 
 #progress{
@@ -425,3 +433,8 @@ div#credits{
    
    margin: -25px 0 0 -25px;
 }
+#map.cartodb-legend-stack {
+    display: none;
+    background-color: red;
+}
+
